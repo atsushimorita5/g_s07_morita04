@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <link rel ="stylesheet" href="css/reset.css">
+  <link rel ="stylesheet" href="css/style.css">
+  <title>アツモリLINE</title>
+</head>
+
+<body>
+
+<!-- コンテンツ表示画面 -->
+<h1>アツモリLIIIIIIIIIINE</h1>
+
+<!--画面-->
+<div id= "field">
+    <ul id= "chat-ul"></ul>
+</div>
+
+<!--入力場所，送信ボタン-->
+<div id= "input-field">
+    <input type= "text" id= "chat-input">
+    <input type= "button" value= "Send" id= "chat-button" onclick= "btnFunc()">
+</div>
+<!--/ コンテンツ表示画面 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.9/firebase.js"></script>
+
+<script>
+// 　チャットの返事
+const chat = [
+  'アツモリBotとchatをしよう',
+  'あなたの名前を教えて?',
+  '名前を教えてくれてありがとう!!好きです!!'
+];
+
+
+// ロボットの返信の合計回数最初は0
+let chatCount = 0;
+
+// 画面への出力
+// valはメッセージの内容，personは誰が話しているか
+function output(val, person) {
+  const field = document.getElementById('field');
+  field.scroll(0, field.scrollHeight - field.clientHeight);
+  
+  const ul = document.getElementById('chat-ul');
+  const li = document.createElement('li');
+  // このdivにテキストを指定
+  const div = document.createElement('div');
+  div.textContent = val;
+    
+  if (person === 'me') { // 自分
+    div.classList.add('chat-right');
+    li.classList.add('right');
+    ul.appendChild(li);
+    li.appendChild(div);
+    }else if (person === 'robot') { 
+    chatBtn.disabled = true;
+    setTimeout( ()=> {
+    chatBtn.disabled = false;
+      li.classList.add('left');
+      div.classList.add('chat-left');
+      ul.appendChild(li);
+      li.appendChild(div);
+      // ロボットのトークの合計数に1足す
+      chatCount++;
+    }, 1000); 
+  };
+};
+
+
+const chatBtn = document.getElementById('chat-button');
+const inputText = document.getElementById('chat-input');
+
+
+// 送信ボタンを押した時の処理　onclick　$ コードも短く
+//　参照透過性　java→jquaryと分ける adclass
+
+function btnFunc() {
+    if (!inputText.value) return false;
+    // 自分のテキストを送信
+    output(inputText.value, 'me');
+  
+    setTimeout( ()=> {
+        inputText.value = '';
+    }, 1);
+  
+    //ロボットの送信の合計回数に応じて次の返信を指定
+    switch(chatCount) {
+      case 2:
+      output('こんにちは ' + inputText.value + ' さんですね!', 'robot');
+      setTimeout( ()=> {
+      output(chat[2], 'robot');
+      }, 1000);
+      break;
+    };
+  };
+// 最初に2つロボットから話しかけられる
+output(chat[0], 'robot');
+
+setTimeout( ()=> {
+    output(chat[1], 'robot');
+}, 1000);
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
